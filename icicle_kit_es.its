@@ -1,0 +1,67 @@
+/dts-v1/;
+
+/ {
+        description = "U-Boot fitImage for icicle-kit-es";
+        #address-cells = <1>;
+
+        images {
+                kernel {
+			description = "Linux kernel";
+			data = /incbin/("./Image");
+			type = "kernel";
+			arch = "riscv";
+			os = "linux";
+			compression = "none";
+			load = <0x80200000>;
+			entry = <0x80200000>;
+			hash@1 {
+				algo = "sha256";
+			};
+		};
+
+		base_fdt {
+			description = "Flattened Device Tree blob";
+			data = /incbin/("./icicle_kit_es.dtb");
+			type = "flat_dt";
+			arch = "riscv";
+			compression = "none";
+			load = <0x82200000>;
+			hash@1 {
+				algo = "sha256";
+			};
+		};
+
+		fdt_i2c0 {
+			description = "Device Tree blob to enable MSS I2C0";
+			data = /incbin/("./icicle_kit_es/icicle_kit_es_i2c0.dtbo");
+			type = "flat_dt";
+			arch = "riscv";
+			compression = "none";
+			load = <0x82210000>;
+			hash@1 {
+				algo = "sha256";
+			};
+		};
+	};
+
+	configurations {
+		default = "kernel_dtb";
+
+		kernel_dtb {
+			description = "kernel and base FDT blob for the icicle kit";
+			kernel = "kernel";
+			fdt = "base_fdt";
+		};
+
+		base_dtb {
+			description = "Base FDT block for the icicle kit";
+			fdt = "base_fdt";
+		};
+
+		i2c0 {
+			description = "FDT overlay to enable MSS I2C0";
+			fdt = "fdt_i2c0";
+		};
+
+	};
+};

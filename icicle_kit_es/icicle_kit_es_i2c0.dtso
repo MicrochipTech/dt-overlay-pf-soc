@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * icicle_kit_es_i2c0.dtso - Device Tree file for icicle kit board
+ * overlay blob to configure MSS I2C0.
+ *
+ * Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries
+ * Author: Matt Wood <matt.wood@microchip.com>
+ *
+ */
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/clock/microchip,mpfs-clock.h>
+
+&L44 {
+	i2c0: i2c@2010a000 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "microsemi,ms-pf-mss-i2c";
+		reg = <0x0 0x2010a000 0x0 0x1000>;
+		interrupt-parent = <&L1>;
+		interrupts = <58>;
+		clock-frequency = <100000>;
+		clocks = <&clkcfg CLK_I2C0>;
+		status = "okay";
+	};
+};
