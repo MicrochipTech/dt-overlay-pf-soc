@@ -9,17 +9,19 @@ DTC?=$(KERNEL_BUILD_DIR)/scripts/dtc/dtc
 PATH:=$(shell dirname $(DTC)):$(PATH)
 
 ICICLE_KIT_ES_DTBO_OBJECTS:= $(patsubst %.dtso,%.dtbo,$(wildcard icicle_kit_es/*.dtso))
+ICICLE_KIT_ES_AMP_DTBO_OBJECTS:= $(patsubst %.dtso,%.dtbo,$(wildcard icicle_kit_es_amp/*.dtso))
 
 %.pre.dtso: %.dtso
-	$(CC) -E -nostdinc -I$(KERNEL_DIR)/include -I$(KERNEL_DIR)/arch/riscv/boot/dts -x assembler-with-cpp -undef -o $@ $^
+	$(CC) -E -nostdinc -I$(KERNEL_DIR)/include -I$(KERNEL_DIR)/arch/riscv/boot/dts/microchip -x assembler-with-cpp -undef -o $@ $^
 
 %.dtbo: %.pre.dtso
 	$(DTC) $(DTC_OPTIONS) -I dts -O dtb -o $@ $^
 
 %.itb: %.its %_dtbos
-	mkimage -D "-i$(KERNEL_BUILD_DIR)/arch/riscv/boot -i$(KERNEL_BUILD_DIR)/arch/riscv/boot/dts -p 1000 $(DTC_OPTIONS)" -f $< $@
+	mkimage -D "-i$(KERNEL_BUILD_DIR)/arch/riscv/boot -i$(KERNEL_BUILD_DIR)/arch/riscv/boot/dts/microchip -p 1000 $(DTC_OPTIONS)" -f $< $@
 
 icicle_kit_es_dtbos: $(ICICLE_KIT_ES_DTBO_OBJECTS)
+icicle_kit_es_amp_dtbos: $(ICICLE_KIT_ES_AMP_DTBO_OBJECTS)
 
 .PHONY: clean
 clean:

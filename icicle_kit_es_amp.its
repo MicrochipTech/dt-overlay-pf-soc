@@ -1,7 +1,7 @@
 /dts-v1/;
 
 / {
-        description = "U-Boot fitImage for icicle-kit-es";
+        description = "U-Boot fitImage for icicle-kit-es in AMP mode";
         #address-cells = <1>;
 
         images {
@@ -21,7 +21,7 @@
 
 		base_fdt {
 			description = "Flattened Device Tree blob";
-			data = /incbin/("./microchip-mpfs-icicle-kit.dtb");
+			data = /incbin/("./microchip-mpfs-icicle-kit-context-a.dtb");
 			type = "flat_dt";
 			arch = "riscv";
 			compression = "none";
@@ -30,7 +30,6 @@
 				algo = "sha256";
 			};
 		};
-
 	};
 
 	configurations {
@@ -49,3 +48,4 @@
 
 	};
 };
+
